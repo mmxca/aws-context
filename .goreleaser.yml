@@ -1,0 +1,120 @@
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+release:
+  github:
+    owner: mmxca
+    name: aws-context
+# .goreleaser.yml
+brews:
+  -
+    # Name template of the recipe
+    # Default to project name
+    name: aws-context
+
+    # GitHub/GitLab repository to push the formula to
+    tap:
+      owner: mmxca
+      name: homebrew-tap
+      branch: main
+      # Optionally a token can be provided, if it differs from the token provided to GoReleaser
+      # token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+
+    # Template for the url which is determined by the given Token (github or gitlab)
+    # Default for github is "https://github.com/<repo_owner>/<repo_name>/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # Default for gitlab is "https://gitlab.com/<repo_owner>/<repo_name>/-/releases/{{ .Tag }}/downloads/{{ .ArtifactName }}"
+    # Default for gitea is "https://gitea.com/<repo_owner>/<repo_name>/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/mmxca/aws-context/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@mmxca.com
+
+    # The project name and current git tag are used in the format string.
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+    # Folder inside the repository to put the formula.
+    # Default is the root folder.
+    folder: Formula
+
+    # Your app's homepage.
+    # Default is empty.
+    homepage: "https://github.com/mmxca/aws-context"
+
+    # Template of your app's description.
+    # Default is empty.
+    description: "AWS Context Switcher."
+
+    # SPDX identifier of your app's license.
+    # Default is empty.
+    license: "MIT"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    # skip_upload: true
+
+    # Custom block for brew.
+    # Can be used to specify alternate downloads for devel or head releases.
+    # Default is empty.
+    # custom_block: |
+    #   head "https://github.com/some/package.git"
+    #   ...
+
+    # Packages your package depends on.
+    # dependencies:
+    #   - name: git
+    #   - name: zsh
+    #     type: optional
+
+    # Packages that conflict with your package.
+    # conflicts:
+    #   - svn
+    #   - bash
+
+    # Specify for packages that run as a service.
+    # Default is empty.
+    # plist: |
+    #   <?xml version="1.0" encoding="UTF-8"?>
+    #   ...
+
+    # So you can `brew test` your formula.
+    # Default is empty.
+    # test: |
+    #   system "#{bin}/program --version"
+    #   ...
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "aws-context"
+ 
+    # Custom post_install script for brew.
+    # Could be used to do any additional work after the "install" script
+    # Default is empty.
+    # post_install: |
+    #     etc.install "app-config.conf"
+    #     ...
