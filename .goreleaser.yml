@@ -1,5 +1,6 @@
 before:
   hooks:
+    - go get gopkg.in/ini.v1
     - go mod tidy
     - go generate ./...
 builds:
