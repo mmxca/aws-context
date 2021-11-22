@@ -1,6 +1,7 @@
 before:
   hooks:
     - go get gopkg.in/ini.v1
+    - go get github.com/jedib0t/go-pretty/v6/table
     - go mod tidy
     - go generate ./...
 builds:
@@ -11,23 +12,22 @@ builds:
       - darwin
       - windows
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+      - "^docs:"
+      - "^test:"
 release:
   github:
     owner: mmxca
     name: aws-context
 # .goreleaser.yml
 brews:
-  -
-    # Name template of the recipe
+  - # Name template of the recipe
     # Default to project name
     name: aws-context
 
@@ -112,7 +112,7 @@ brews:
     # Default is 'bin.install "program"'.
     install: |
       bin.install "aws-context"
- 
+
     # Custom post_install script for brew.
     # Could be used to do any additional work after the "install" script
     # Default is empty.

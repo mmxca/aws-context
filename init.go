@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"strings"
 	"gopkg.in/ini.v1"
-	"fmt"
 )
 
 func doInit(initDryRun bool, initDir string, initBaseProfile string, args []string) {
@@ -30,10 +29,6 @@ func doInit(initDryRun bool, initDir string, initBaseProfile string, args []stri
     config_json, _ := json.Marshal(config)
 
 	json_WriteConfig(initDir, initBaseProfile, config_json)
-
-	test := json_ReadConfig(initDir, initBaseProfile)
-
-	fmt.Println(test.AccessKeyId)
 }
 
 
